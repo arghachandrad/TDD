@@ -1,6 +1,7 @@
 // test("has header", () => {}) - one way
 import SignUpPage from "./SignUpPage"
 import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 describe("Sign Up Page", () => {
   describe("Layout", () => {
@@ -70,6 +71,19 @@ describe("Sign Up Page", () => {
       render(<SignUpPage />)
       const button = screen.queryByRole("button", { name: "Sign Up" })
       expect(button).toBeDisabled()
+    })
+  })
+
+  describe("Interactions", () => {
+    it("enables the button when password and password repeat fields have same value", () => {
+      render(<SignUpPage />)
+      const passwordInput = screen.getByLabelText("Password")
+      const passwordRepeatInput = screen.getByLabelText("Password Repeat")
+      // enter same value to both the input and buttn should be enable
+      userEvent.type(passwordInput, "Password")
+      userEvent.type(passwordRepeatInput, "Password")
+      const button = screen.queryByRole("button", { name: "Sign Up" })
+      expect(button).toBeEnabled()
     })
   })
 })
